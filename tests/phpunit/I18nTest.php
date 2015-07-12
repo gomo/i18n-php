@@ -24,7 +24,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
       "保存" => array(
         "value" => "",
         "files" => array(
-          $this->basePath.'/sample/app/controllers/TestController.php',
+          $this->basePath.'/sample/index.php',
         ),
       ),
     )), Gomo\I18n\Generator::YAML_INLINE);
@@ -44,15 +44,18 @@ class I18nTest extends PHPUnit_Framework_TestCase
 
     $gen->load();
 
-    $enties = $gen->getEntries();
-    $this->assertEquals(1, count($enties));
+    $entries = $gen->getEntries();
+    //setUpで一つ入れてあるので`1`。入れたキーは`保存`
+    $this->assertEquals(1, count($entries));
 
-    $gen->addEntries($this->basePath.'/sample/app/controllers/TestController.php');
+    //sample/index.phpを読み込む
+    $gen->addEntries($this->basePath.'/sample/index.php');
 
-    $enties = $gen->getEntries();
-    $this->assertCount(2, $enties);
+    //sample/index.phpには2つあるが、`保存`はかぶっているので`2`
+    $entries = $gen->getEntries();
+    $this->assertCount(2, $entries);
 
-    $this->assertCount(1, $enties['保存']->getFiles());
+    $this->assertCount(1, $entries['保存']->getFiles());
 
     $gen->save();
 
@@ -65,9 +68,9 @@ class I18nTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('戻る', $keys[1]);
 
     $this->assertCount(1, $result['保存']['files']);
-    $this->assertEquals($this->basePath.'/sample/app/controllers/TestController.php', $result['保存']['files'][0]);
+    $this->assertEquals($this->basePath.'/sample/index.php', $result['保存']['files'][0]);
 
     $this->assertCount(1, $result['戻る']['files']);
-    $this->assertEquals($this->basePath.'/sample/app/controllers/TestController.php', $result['戻る']['files'][0]);
+    $this->assertEquals($this->basePath.'/sample/index.php', $result['戻る']['files'][0]);
   }
 }
