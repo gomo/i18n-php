@@ -1,8 +1,6 @@
-'$i18n->__i18n(''foo'')':
-    value: ''
-    files:
-        - /Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/regex.php
 保存:
     value: ''
-    files:
-        - /Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/old.php
+    files: [/Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/old.php]
+'desc for somthing':
+    value: "改行を含む\n改行を含む"
+    files: [/Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/old.php]

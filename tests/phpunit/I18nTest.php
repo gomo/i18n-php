@@ -2,6 +2,7 @@
 
 use Symfony\Component\Yaml\Yaml;
 
+
 class I18nTest extends PHPUnit_Framework_TestCase
 {
   private $basePath;
@@ -61,7 +62,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
 
     $this->assertCount(2, $entries['保存']->getFiles());
 
-    $gen->save();
+    $gen->saveFile();
 
     //保存ファイルの確認
     $result = $this->loadYaml('ja');
@@ -105,7 +106,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
     $entries = $gen->getEntries();
     $this->assertCount(2, $entries);
 
-    $gen->save();
+    $gen->saveFile();
 
     //保存ファイルの確認
     $result = $this->loadYaml('ja');
@@ -120,5 +121,35 @@ class I18nTest extends PHPUnit_Framework_TestCase
 
     $this->assertCount(1, $result['保存']['files']);
     $this->assertEquals($this->basePath.'/sample/old.php', $result['保存']['files'][0]);
+  }
+
+  public function testRedis()
+  {
+    $this->resetLangFile('ja', array(
+      "保存" => array(
+        "value" => "",
+        "files" => array(
+          $this->basePath.'/sample/old.php',
+        ),
+      ),
+      "desc for somthing" => array(
+        "value" => <<<EOF
+改行を含む
+改行を含む
+EOF
+        ,
+        "files" => array(
+          $this->basePath.'/sample/old.php',
+        ),
+      ),
+    ));
+    $gen = new Gomo\I18n\Generator();
+    $gen->setDir($this->basePath.'/sample/lang');
+    $gen->updateRedis();
+
+    $i18n = new Gomo\I18n();
+    $i18n->setLang('ja');
+    $this->assertEquals('保存', $i18n->__i18n('保存'));
+    $this->assertEquals("改行を含む".PHP_EOL."改行を含む", $i18n->__i18n('desc for somthing'));
   }
 }
