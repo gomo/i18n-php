@@ -15,7 +15,7 @@
 
   <div>
     <?php
-      //generator unsupported
+      //generator unsupported リテラルな文字列のみ
       $key = 'トップへ戻る';
       echo $foo = $i18n->__i18n($key);
     ?>
@@ -23,7 +23,7 @@
 
   <div>
     <?php
-      //generator unsupported
+      //generator unsupported 改行を含む文字列は対応しません
       echo $foo = $i18n->__i18n(
 <<<EOF
 改行入りの文章はgeneratorでは
