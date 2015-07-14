@@ -10,13 +10,14 @@ class I18n
   private $redis;
   private static $current;
 
-  public static function current(I18n $i18n = null)
+  public static function setCurrent(I18n $i18n)
   {
-    if($i18n){
-      self::$current = $i18n;
-    } else {
-      return self::$current;
-    }
+    self::$current = $i18n;
+  }
+
+  public static function get($key)
+  {
+    return self::$current->getVal($key);
   }
 
   public function __construct($lang)
@@ -26,7 +27,7 @@ class I18n
     $this->lang = $lang;
   }
 
-  public function __i18n($key)
+  public function getVal($key)
   {
     $value = $this->redis->get($key.'@'.$this->lang);
     return $value === null ? $key : $value;

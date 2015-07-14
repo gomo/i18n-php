@@ -6,6 +6,6 @@
 </head>
 <body>
   <!-- generator supported -->
-  <div><?php echo $i18n->__i18n("$i18n->__i18n('foo')"); ?></div>
+  <div><?php echo Gomo\I18n::get("Gomo\I18n::get('foo')"); ?></div>
 </body>
 </html>

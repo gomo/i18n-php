@@ -54,9 +54,9 @@ class Generator
   public function addEntries($filePath)
   {
     $body = file_get_contents($filePath);
-
-    if(preg_match_all('/\->__i18n\([\r\n ]*(?:\'|")([^\r\n]+)(?:\'|")[\r\n ]*\)/u', $body, $matches))
+    if(preg_match_all('/Gomo\\\I18n::get\([\r\n ]*(?:\'|")([^\r\n]+)(?:\'|")[\r\n ]*\)/u', $body, $matches))
     {
+
       foreach($matches[1] as $key){
         $entry = @$this->entries[$key];
         if(!$entry){

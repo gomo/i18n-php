@@ -113,11 +113,11 @@ class I18nTest extends PHPUnit_Framework_TestCase
     $this->assertCount(2, $result);
 
     $keys = array_keys($result);
-    $this->assertEquals("\$i18n->__i18n('foo')", $keys[0]);
+    $this->assertEquals("Gomo\I18n::get('foo')", $keys[0]);
     $this->assertEquals('保存', $keys[1]);
 
-    $this->assertCount(1, $result["\$i18n->__i18n('foo')"]['files']);
-    $this->assertEquals($this->basePath.'/sample/regex.php', $result["\$i18n->__i18n('foo')"]['files'][0]);
+    $this->assertCount(1, $result["Gomo\I18n::get('foo')"]['files']);
+    $this->assertEquals($this->basePath.'/sample/regex.php', $result["Gomo\I18n::get('foo')"]['files'][0]);
 
     $this->assertCount(1, $result['保存']['files']);
     $this->assertEquals($this->basePath.'/sample/old.php', $result['保存']['files'][0]);
@@ -147,8 +147,8 @@ EOF
     $gen->setDir($this->basePath.'/sample/lang');
     $gen->updateRedis();
 
-    Gomo\I18n::current(new Gomo\I18n('ja'));
-    $this->assertEquals('保存', Gomo\I18n::current()->__i18n('保存'));
-    $this->assertEquals("改行を含む".PHP_EOL."改行を含む", Gomo\I18n::current()->__i18n('desc for somthing'));
+    Gomo\I18n::setCurrent(new Gomo\I18n('ja'));
+    $this->assertEquals('保存', Gomo\I18n::get('保存'));
+    $this->assertEquals("改行を含む".PHP_EOL."改行を含む", Gomo\I18n::get('desc for somthing'));
   }
 }
