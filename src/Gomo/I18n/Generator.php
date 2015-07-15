@@ -1,7 +1,9 @@
 <?php
 namespace Gomo\I18n;
 
+require_once __DIR__ . '/../../../vendor/redisent/redis/src/Redisent/Redis.php';
 require_once __DIR__ . '/../../../vendor/symfony/yaml/Symfony/Component/Yaml/Yaml.php';
+require_once __DIR__ . '/Generator/Entry.php';
 use Gomo\I18n\Generator\Entry;
 use Symfony\Component\Yaml\Yaml;
 use redisent\Redis;
