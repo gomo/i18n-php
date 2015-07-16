@@ -1,15 +1,9 @@
-'Gomo\I18n::get(''foo'')':
-    value: ''
-    files:
-        - tests/sample/regex.php
 保存:
     value: ''
     files:
         - /Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/index.php
         - /Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/old.php
-        - tests/sample/index.php
 戻る:
     value: ''
     files:
         - /Users/masamoto/Documents/repos/home/source/sites/i18n-php/tests/phpunit/../sample/index.php
-        - tests/sample/index.php
