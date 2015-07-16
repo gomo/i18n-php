@@ -13,4 +13,4 @@ before_script:
   - composer install --dev
 
 script:
-  - vendor/bin/phpunit --bootstrap=src/bootstrap.php tests/phpunit
+  - vendor/bin/phpunit tests/phpunit
