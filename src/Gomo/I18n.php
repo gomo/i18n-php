@@ -1,7 +1,6 @@
 <?php
 namespace Gomo;
 
-require_once __DIR__ . '/../../vendor/redisent/redis/src/Redisent/Redis.php';
 use redisent\Redis;
 
 class I18n

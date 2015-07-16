@@ -2,8 +2,7 @@
 
 use Symfony\Component\Yaml\Yaml;
 
-require_once __DIR__ . '/../../src/Gomo/I18n.php';
-require_once __DIR__ . '/../../src/Gomo/I18n/Generator.php';
+require_once __DIR__ . '/../../src/bootstrap.php';
 
 class I18nTest extends PHPUnit_Framework_TestCase
 {

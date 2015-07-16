@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2e19fb277ae679c6c2858f72addf2a7b",
+    "hash": "e087a6adb4fd1c938afa39ab01408811",
     "packages": [
         {
             "name": "redisent/redis",
