@@ -27,7 +27,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
   {
     $gen = new Gomo\I18n\Generator();
     $gen
-      ->setSourceLang($lang)
+      ->setLang($lang)
       ->setDir($this->basePath.'/sample/lang');
 
     file_put_contents($gen->getLangFilePath(), Yaml::dump($values), Gomo\I18n\Generator::YAML_INLINE);
@@ -45,7 +45,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
     ));
     $gen = new Gomo\I18n\Generator();
     $gen
-      ->setSourceLang('ja')
+      ->setLang('ja')
       ->setDir($this->basePath.'/sample/lang');
 
     $gen->load();
@@ -93,7 +93,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
     ));
     $gen = new Gomo\I18n\Generator();
     $gen
-      ->setSourceLang('ja')
+      ->setLang('ja')
       ->setDir($this->basePath.'/sample/lang');
 
     $gen->load();
@@ -173,7 +173,11 @@ EOF
     ));
     $gen = new Gomo\I18n\Generator();
     $gen->setDir($this->basePath.'/sample/lang');
-    $gen->updateRedis();
+    $gen->clearRedis();
+
+
+    $gen->setLang('ja')->updateRedis();
+    $gen->setLang('en')->updateRedis();
 
     Gomo\I18n::setCurrent(new Gomo\I18n('ja'));
     $this->assertEquals('保存', Gomo\I18n::get('保存'));
