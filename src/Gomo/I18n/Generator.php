@@ -34,7 +34,13 @@ class Generator
   public function load()
   {
     $this->entries = array();
-    $values = Yaml::parse(file_get_contents($this->getLangFilePath()));
+    $source = @file_get_contents($this->getLangFilePath());
+    if($source){
+      $values = Yaml::parse($source);
+    } else {
+      $values = array();
+    }
+
     foreach($values as $key => $data){
       $entry = new Entry($key);
       $entry->setValue($data['value']);

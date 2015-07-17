@@ -32,4 +32,4 @@ $gen->load();
 $gen->addEntries($scriptPath);
 $gen->saveFile();
 
-fwrite(STDOUT, 'Done '.$scriptPath.PHP_EOL);
+fwrite(STDOUT, 'Done '.$scriptPath.' for '.$lang.PHP_EOL);

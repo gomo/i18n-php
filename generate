@@ -13,9 +13,11 @@ if(!isset($argv[2])){
   exit(1);
 }
 
-$lang = $argv[2];
+$langs = $argv[2];
 
 while($path = fgets(STDIN)){
-  $command = sprintf('php %s/src/generate.php %s %s %s', __DIR__, trim($path), $langDir, $lang);
-  system($command, $retval);
+  foreach(explode(',', $langs) as $lang){
+    $command = sprintf('php %s/src/generate.php %s %s %s', __DIR__, trim($path), $langDir, $lang);
+    system($command, $retval);
+  }
 }
