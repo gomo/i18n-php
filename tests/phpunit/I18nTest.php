@@ -143,6 +143,33 @@ EOF
           $this->basePath.'/sample/old.php',
         ),
       ),
+      "%s分コース" => array(
+        "value" => "",
+        "files" => array(
+          $this->basePath.'/sample/old.php',
+        )
+      ),
+      "%s/%s/%d" => array(
+        "value" => "",
+        "files" => array(
+          $this->basePath.'/sample/old.php',
+        )
+      )
+    ));
+
+    $this->resetLangFile('en', array(
+      "保存" => array(
+        "value" => "Save",
+        "files" => array(
+          $this->basePath.'/sample/old.php',
+        ),
+      ),
+      "%s分コース" => array(
+        "value" => "%s minutes course",
+        "files" => array(
+          $this->basePath.'/sample/old.php',
+        )
+      ),
     ));
     $gen = new Gomo\I18n\Generator();
     $gen->setDir($this->basePath.'/sample/lang');
@@ -151,5 +178,11 @@ EOF
     Gomo\I18n::setCurrent(new Gomo\I18n('ja'));
     $this->assertEquals('保存', Gomo\I18n::get('保存'));
     $this->assertEquals("改行を含む".PHP_EOL."改行を含む", Gomo\I18n::get('desc for somthing'));
+    $this->assertEquals('120分コース', Gomo\I18n::get('%s分コース', '120'));
+    $this->assertEquals('foo/bar/30', Gomo\I18n::get('%s/%s/%d', 'foo', 'bar', 30));
+
+    Gomo\I18n::setCurrent(new Gomo\I18n('en'));
+    $this->assertEquals('Save', Gomo\I18n::get('保存'));
+    $this->assertEquals('120 minutes course', Gomo\I18n::get('%s分コース', '120'));
   }
 }

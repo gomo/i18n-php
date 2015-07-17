@@ -16,9 +16,15 @@ class I18n
     self::$current = $i18n;
   }
 
-  public static function get($key)
+  /**
+   * self::$current::getVar()へのショートカット。
+   * @see I18n::getVar()
+   * @param string key[, ...]
+   * @return string
+   */
+  public static function get()
   {
-    return self::$current->getVal($key);
+    return call_user_func_array(array(self::$current, 'getVal'), func_get_args());
   }
 
   public function __construct($lang)
@@ -28,9 +34,26 @@ class I18n
     $this->lang = $lang;
   }
 
-  public function getVal($key)
+  /**
+   * 可変引数。sprintfの様な記法が可能。
+   * @param string key[, ...]
+   * @return string
+   */
+  public function getVal()
   {
+    $args = func_get_args();
+    $key = $args[0];
+    unset($args[0]);
+
     $value = $this->redis->get($key.'@'.$this->lang);
-    return $value === null ? $key : $value;
+    if($value === null){
+      $value = $key;
+    }
+
+    if($args){
+      return vsprintf($value, $args);
+    } else {
+      return $value;
+    }
   }
 }
