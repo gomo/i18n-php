@@ -20,11 +20,11 @@ if(!isset($argv[3])){
 
 $lang = $argv[3];
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/bootstrap.php';
 
 $gen = new Gomo\I18n\Generator();
 $gen
-  ->setSourceLang($lang)
+  ->setLang($lang)
   ->setDir($langDir);
 
 $gen->load();
