@@ -1,19 +1,23 @@
 <?php
-namespace Gomo\I18n;
+namespace Gomo\I18n\Generator;
 
-require_once __DIR__ . '/../../../vendor/redisent/redis/src/Redisent/Redis.php';
-use Gomo\I18n\Generator\Entry;
+use Gomo\I18n\Storage;
 use Symfony\Component\Yaml\Yaml;
-use redisent\Redis;
 
 class Generator
 {
   private $lang;
   private $dir;
   private $entries = array();
-  private $redisDb = 0;
+  private $storage;
 
   const YAML_INLINE = 3;
+
+  public function setStorage(Storage\Storage $storage)
+  {
+    $this->storage = $storage;
+    return $this;
+  }
 
   public function setDir($dir)
   {
@@ -23,6 +27,13 @@ class Generator
 
   public function getLangFilePath()
   {
+    if(!$this->dir){
+      throw new \Exception('Missing dir.');
+    }
+
+    if(!$this->lang){
+      throw new \Exception('Missing lang.');
+    }
     return $this->dir.'/'.$this->lang.'.yml';
   }
 
@@ -91,25 +102,28 @@ class Generator
     file_put_contents($this->getLangFilePath(), Yaml::dump($values, Generator::YAML_INLINE));
   }
 
-  public function clearRedis()
+  private function storage()
   {
-    $redis = new Redis();
-    $redis->select($this->redisDb);
-    $redis->flushdb();
+    if(!$this->storage){
+      throw new \Exception("Storage is empty.");
+    }
+    return $this->storage;
   }
 
-  public function updateRedis()
+  public function clearStorage()
   {
-    $redis = new Redis();
-    $redis->select($this->redisDb);
+    $this->storage()->clear();
+  }
 
+  public function updateStorage()
+  {
     $path = $this->getLangFilePath();
     if(!is_readable($path)){
-      throw new Exception("Not readable ".$path);
+      throw new \Exception("Not readable ".$path);
     }
     $values = Yaml::parse(file_get_contents($path));
     foreach($values as $key => $data){
-      $redis->set($key.'@'.$this->lang, $data['value']);
+      $this->storage()->set($this->lang, $key, $data['value']);
     }
   }
 }

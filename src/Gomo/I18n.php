@@ -1,14 +1,12 @@
 <?php
 namespace Gomo;
 
-require_once __DIR__ . '/../../vendor/redisent/redis/src/Redisent/Redis.php';
-use redisent\Redis;
+use Gomo\I18n\Storage;
 
 class I18n
 {
   private $lang;
-  private $redisDb = 0;
-  private $redis;
+  private $storage;
   private static $current;
 
   public static function setCurrent(I18n $i18n)
@@ -27,10 +25,9 @@ class I18n
     return call_user_func_array(array(self::$current, 'getVal'), func_get_args());
   }
 
-  public function __construct($lang)
+  public function __construct(Storage\Storage $storage, $lang)
   {
-    $this->redis = new Redis();
-    $this->redis->select($this->redisDb);
+    $this->storage = $storage;
     $this->lang = $lang;
   }
 
@@ -45,7 +42,7 @@ class I18n
     $key = $args[0];
     unset($args[0]);
 
-    $value = $this->redis->get($key.'@'.$this->lang);
+    $value = $this->storage->get($this->lang, $key);
     if($value === null){
       $value = $key;
     }

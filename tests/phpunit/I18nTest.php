@@ -16,6 +16,19 @@ class I18nTest extends PHPUnit_Framework_TestCase
   public function setUp()
   {
     $this->basePath = __DIR__ . '/..';
+
+    //ymlファイルをクリア
+    foreach(scandir($this->basePath.'/sample/lang/') as $entry)
+    {
+      if(strpos($entry, '.yml') !== false)
+      {
+        unlink($this->basePath.'/sample/lang/'.$entry);
+      }
+    }
+
+    //storageをクリア
+    $storage = new Gomo\I18n\Storage\Redis();
+    $storage->clear();
   }
 
   private function loadYaml($lang)
@@ -25,12 +38,15 @@ class I18nTest extends PHPUnit_Framework_TestCase
 
   private function resetLangFile($lang, array $values)
   {
-    $gen = new Gomo\I18n\Generator();
+    $gen = new Gomo\I18n\Generator\Generator();
     $gen
       ->setLang($lang)
       ->setDir($this->basePath.'/sample/lang');
 
-    file_put_contents($gen->getLangFilePath(), Yaml::dump($values), Gomo\I18n\Generator::YAML_INLINE);
+    $storage = new Gomo\I18n\Storage\Redis();
+    $gen->setStorage($storage);
+
+    file_put_contents($gen->getLangFilePath(), Yaml::dump($values), Gomo\I18n\Generator\Generator::YAML_INLINE);
   }
 
   public function testSimpleGenerator()
@@ -43,7 +59,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
         ),
       ),
     ));
-    $gen = new Gomo\I18n\Generator();
+    $gen = new Gomo\I18n\Generator\Generator();
     $gen
       ->setLang('ja')
       ->setDir($this->basePath.'/sample/lang');
@@ -91,7 +107,7 @@ class I18nTest extends PHPUnit_Framework_TestCase
         ),
       ),
     ));
-    $gen = new Gomo\I18n\Generator();
+    $gen = new Gomo\I18n\Generator\Generator();
     $gen
       ->setLang('ja')
       ->setDir($this->basePath.'/sample/lang');
@@ -171,21 +187,25 @@ EOF
         )
       ),
     ));
-    $gen = new Gomo\I18n\Generator();
+    $gen = new Gomo\I18n\Generator\Generator();
     $gen->setDir($this->basePath.'/sample/lang');
-    $gen->clearRedis();
+    $storage = new Gomo\I18n\Storage\Redis();
+    $gen->setStorage($storage);
 
+    $gen->clearStorage();
 
-    $gen->setLang('ja')->updateRedis();
-    $gen->setLang('en')->updateRedis();
+    $gen->setLang('ja')->updateStorage();
+    $gen->setLang('en')->updateStorage();
 
-    Gomo\I18n::setCurrent(new Gomo\I18n('ja'));
+    $storage = new Gomo\I18n\Storage\Redis();
+
+    Gomo\I18n::setCurrent(new Gomo\I18n($storage, 'ja'));
     $this->assertEquals('保存', Gomo\I18n::get('保存'));
     $this->assertEquals("改行を含む".PHP_EOL."改行を含む", Gomo\I18n::get('desc for somthing'));
     $this->assertEquals('120分コース', Gomo\I18n::get('%s分コース', '120'));
     $this->assertEquals('foo/bar/30', Gomo\I18n::get('%s/%s/%d', 'foo', 'bar', 30));
 
-    Gomo\I18n::setCurrent(new Gomo\I18n('en'));
+    Gomo\I18n::setCurrent(new Gomo\I18n($storage, 'en'));
     $this->assertEquals('Save', Gomo\I18n::get('保存'));
     $this->assertEquals('120 minutes course', Gomo\I18n::get('%s分コース', '120'));
   }

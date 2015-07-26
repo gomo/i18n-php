@@ -22,7 +22,7 @@ $lang = $argv[3];
 
 require_once __DIR__ . '/bootstrap.php';
 
-$gen = new Gomo\I18n\Generator();
+$gen = new Gomo\I18n\Generator\Generator();
 $gen
   ->setLang($lang)
   ->setDir($langDir);

@@ -15,8 +15,14 @@ $lang = $argv[2];
 
 require_once __DIR__ . '/bootstrap.php';
 
-$gen = new Gomo\I18n\Generator();
-$gen->setDir($langDir);
-$gen->setLang($lang)->updateRedis();
+$gen = new Gomo\I18n\Generator\Generator();
+$gen
+  ->setDir($langDir)
+  ->setLang($lang);
+
+$storage = new Gomo\I18n\Storage\Redis();
+$gen->setStorage($storage);
+
+$gen->updateRedis();
 
 fwrite(STDOUT, 'Done '.$lang.' redis '.PHP_EOL);
