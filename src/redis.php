@@ -23,6 +23,6 @@ $gen
 $storage = new Gomo\I18n\Storage\Redis();
 $gen->setStorage($storage);
 
-$gen->updateRedis();
+$gen->updateStorage();
 
 fwrite(STDOUT, 'Done '.$lang.' redis '.PHP_EOL);
