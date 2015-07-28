@@ -25,10 +25,24 @@ class I18n
     return call_user_func_array(array(self::$current, 'getVal'), func_get_args());
   }
 
+  /**
+   * self::$current::getLang()へのショートカット。
+   * @return string e.g. en|ja|fr
+   */
+  public static function lang()
+  {
+    return self::$current->getLang();
+  }
+
   public function __construct(Storage\Storage $storage, $lang)
   {
     $this->storage = $storage;
     $this->lang = $lang;
+  }
+
+  public function getLang()
+  {
+    return $this->lang;
   }
 
   /**
